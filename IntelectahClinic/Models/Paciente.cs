@@ -6,6 +6,8 @@ namespace IntelectahClinic.Models;
 public class Paciente : IdentityUser
 {
     [Required]
+    public string NomeCompleto { get; set; }
+    [Required]
     public string Cpf { get; set; }
     [Required]
     public DateTime DataNascimento { get; set; }

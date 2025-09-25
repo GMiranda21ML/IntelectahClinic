@@ -1,4 +1,7 @@
+using IntelectahClinic.Models;
 using IntelectahClinic.Repository;
+using IntelectahClinic.Service;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<UserContext>(options => options
 .UseSqlServer(builder.Configuration.GetConnectionString("IntelectahClinicConnection")));
+
+builder.Services
+    .AddIdentity<Paciente, IdentityRole>()
+    .AddEntityFrameworkStores<UserContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<PacienteUserService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
