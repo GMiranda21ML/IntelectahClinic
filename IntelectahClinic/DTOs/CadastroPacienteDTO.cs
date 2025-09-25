@@ -17,6 +17,10 @@ public class CadastroPacienteDTO
     [Required(ErrorMessage = "E-mail é Obrigatório")]
     [DataType(DataType.EmailAddress)]
     public string Email { get; set; }
+    [Required(ErrorMessage = "Convênio é Obrigatório")]
+    [StringLength(100)]
+    public string Convenio { get; set; }
+
     [Required(ErrorMessage = "Senha é Obrigatório")]
     [DataType(DataType.Password, ErrorMessage = "A senha precisa ter letras maiúsculas e menúsculas, número e caracter especial")]
     public string Password {  get; set; }

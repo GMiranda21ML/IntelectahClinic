@@ -11,6 +11,8 @@ public class Paciente : IdentityUser
     public string Cpf { get; set; }
     [Required]
     public DateTime DataNascimento { get; set; }
+    [Required]
+    public string Convenio { get; set; }
 
     public Paciente() : base() { }
 }

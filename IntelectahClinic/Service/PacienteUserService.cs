@@ -32,7 +32,6 @@ public class PacienteUserService
 
         Paciente paciente = _mapper.Map<Paciente>(dto);
         paciente.UserName = dto.Cpf;
-        //paciente.NomeCompleto = dto.NomeCompleto;
         IdentityResult resultado = await _userManager.CreateAsync(paciente, dto.Password);
     
         if (!resultado.Succeeded)

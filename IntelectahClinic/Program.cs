@@ -11,6 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<UserContext>(options => options
 .UseSqlServer(builder.Configuration.GetConnectionString("IntelectahClinicConnection")));
 
+builder.Services.AddDbContext<IntelectahClinicContext>(options => options
+.UseSqlServer(builder.Configuration.GetConnectionString("IntelectahClinicConnection")));
+
 builder.Services
     .AddIdentity<Paciente, IdentityRole>()
     .AddEntityFrameworkStores<UserContext>()
@@ -19,6 +22,7 @@ builder.Services
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<PacienteUserService>();
+builder.Services.AddScoped<PacienteService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
