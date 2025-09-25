@@ -8,6 +8,7 @@ public class IntelectahClinicContext : IdentityDbContext<Paciente>
 {
     public DbSet<Paciente> Pacientes { get; set; }
     public DbSet<Especialidade> Especialidades { get; set; }
+    public DbSet<Unidade> Unidades { get; set; }
 
     public IntelectahClinicContext(DbContextOptions<IntelectahClinicContext> options) : base(options)
     {
