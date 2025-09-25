@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IntelectahClinic.Migrations
 {
-    [DbContext(typeof(UserContext))]
+    [DbContext(typeof(IntelectahClinicContext))]
     [Migration("20250925220554_NovoCampoConvenio")]
     partial class NovoCampoConvenio
     {

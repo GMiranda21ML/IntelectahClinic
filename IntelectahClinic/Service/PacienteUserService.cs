@@ -12,10 +12,10 @@ public class PacienteUserService
 {
     private IMapper _mapper;
     private UserManager<Paciente> _userManager;
-    private UserContext _userContext;
+    private IntelectahClinicContext _userContext;
     private SignInManager<Paciente> _signInManager;
 
-    public PacienteUserService(IMapper mapper, UserManager<Paciente> userManager, UserContext userContext, SignInManager<Paciente> signInManager)
+    public PacienteUserService(IMapper mapper, UserManager<Paciente> userManager, IntelectahClinicContext userContext, SignInManager<Paciente> signInManager)
     {
         _mapper = mapper;
         _userManager = userManager;

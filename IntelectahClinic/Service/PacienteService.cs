@@ -7,10 +7,10 @@ namespace IntelectahClinic.Service;
 
 public class PacienteService
 {
-    private UserContext _context;
+    private IntelectahClinicContext _context;
     private IMapper _mapper;
 
-    public PacienteService(UserContext context, IMapper mapper)
+    public PacienteService(IntelectahClinicContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

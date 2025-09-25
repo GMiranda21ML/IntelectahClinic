@@ -8,15 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddDbContext<UserContext>(options => options
-.UseSqlServer(builder.Configuration.GetConnectionString("IntelectahClinicConnection")));
-
 builder.Services.AddDbContext<IntelectahClinicContext>(options => options
 .UseSqlServer(builder.Configuration.GetConnectionString("IntelectahClinicConnection")));
 
 builder.Services
     .AddIdentity<Paciente, IdentityRole>()
-    .AddEntityFrameworkStores<UserContext>()
+    .AddEntityFrameworkStores<IntelectahClinicContext>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
