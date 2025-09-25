@@ -24,4 +24,11 @@ public class AgendamentoController : ControllerBase
         var agendamentos = await _service.ListarPorPaciente(id);
         return Ok(agendamentos);
     }
+
+    [HttpPost("cancelar/{id}/{pacienteId}")]
+    public async Task<IActionResult> Cancelar(int id, string pacienteId)
+    {
+        await _service.Cancelar(id, pacienteId);
+        return Ok("Agendamento cancelado");
+    }
 }

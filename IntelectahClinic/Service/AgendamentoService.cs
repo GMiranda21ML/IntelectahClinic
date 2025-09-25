@@ -1,4 +1,5 @@
 ﻿using IntelectahClinic.DTOs;
+using IntelectahClinic.Models.enums;
 using IntelectahClinic.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,5 +30,25 @@ public class AgendamentoService
             })
             .ToListAsync();
     }
+
+    public async Task Cancelar(int agendamentoId, string pacienteId)
+    {
+        var agendamento = await _context.Agendamentos
+            .FirstOrDefaultAsync(a => a.Id == agendamentoId && a.PacienteId == pacienteId);
+
+        if (agendamento == null)
+        {
+            throw new ApplicationException("Agendamento não encontrado");
+        }
+
+        if (agendamento.Status == StatusAgendamento.ATENDIDO)
+        {
+            throw new ApplicationException("Paciente ja foi Atendido");
+        }
+
+        agendamento.Status = StatusAgendamento.CANCELADO;
+        await _context.SaveChangesAsync();
+    }
+
 
 }
