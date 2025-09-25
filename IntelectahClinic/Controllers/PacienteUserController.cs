@@ -21,4 +21,6 @@ public class PacienteUserController : Controller
         await _userService.Cadastro(dto);
         return Ok("Usuário Cadastrado!");
     }
+
+
 }

@@ -2,6 +2,7 @@
 using IntelectahClinic.DTOs;
 using IntelectahClinic.Models;
 using IntelectahClinic.Profiles;
+using IntelectahClinic.Repository;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -11,15 +12,22 @@ public class PacienteUserService
 {
     private IMapper _mapper;
     private UserManager<Paciente> _userManager;
+    private UserContext _userContext;
 
-    public PacienteUserService(IMapper mapper, UserManager<Paciente> userManager)
+    public PacienteUserService(IMapper mapper, UserManager<Paciente> userManager, UserContext userContext)
     {
         _mapper = mapper;
         _userManager = userManager;
+        _userContext = userContext;
     }
 
     public async Task Cadastro(CadastroPacienteDTO dto)
     {
+        if (_userContext.Pacientes.Any(p => p.Cpf == dto.Cpf))
+        {
+            throw new ApplicationException("Já existe um paciente com este CPF");
+        } 
+
         Paciente paciente = _mapper.Map<Paciente>(dto);
         paciente.UserName = dto.NomeCompleto.Split(' ')[0];
         paciente.NomeCompleto = dto.NomeCompleto;
@@ -27,8 +35,7 @@ public class PacienteUserService
     
         if (!resultado.Succeeded)
         {
-            var erros = string.Join(" | ", resultado.Errors.Select(e => e.Description));
-            throw new ApplicationException($"Falha ao Cadastrar Usuário: {erros}");
+            throw new ApplicationException("Falha ao Cadastrar Usuário!");
         }
     }
 }
