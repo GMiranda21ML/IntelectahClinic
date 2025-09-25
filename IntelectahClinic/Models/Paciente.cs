@@ -15,4 +15,6 @@ public class Paciente : IdentityUser
     public string Convenio { get; set; }
 
     public Paciente() : base() { }
+
+    public ICollection<Agendamento> Agendamentos { get; set; }
 }

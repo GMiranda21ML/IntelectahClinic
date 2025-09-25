@@ -4,6 +4,7 @@ using IntelectahClinic.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntelectahClinic.Migrations
 {
     [DbContext(typeof(IntelectahClinicContext))]
-    partial class UserContextModelSnapshot : ModelSnapshot
+    [Migration("20250925232402_ReelacionandoPacienteAgendamento")]
+    partial class ReelacionandoPacienteAgendamento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +62,7 @@ namespace IntelectahClinic.Migrations
 
                     b.HasIndex("UnidadeId");
 
-                    b.ToTable("Agendamentos");
+                    b.ToTable("Agendamento");
                 });
 
             modelBuilder.Entity("IntelectahClinic.Models.Especialidade", b =>

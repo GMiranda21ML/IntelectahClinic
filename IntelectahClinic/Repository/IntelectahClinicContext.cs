@@ -9,6 +9,7 @@ public class IntelectahClinicContext : IdentityDbContext<Paciente>
     public DbSet<Paciente> Pacientes { get; set; }
     public DbSet<Especialidade> Especialidades { get; set; }
     public DbSet<Unidade> Unidades { get; set; }
+    public DbSet<Agendamento> Agendamentos { get; set; }
 
     public IntelectahClinicContext(DbContextOptions<IntelectahClinicContext> options) : base(options)
     {
@@ -25,6 +26,10 @@ public class IntelectahClinicContext : IdentityDbContext<Paciente>
 
         builder.Entity<Especialidade>()
             .Property(e => e.Tipo)
+            .HasConversion<string>();
+        
+        builder.Entity<Agendamento>()
+            .Property(e => e.Status)
             .HasConversion<string>();
     }
 }

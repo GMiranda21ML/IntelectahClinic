@@ -13,4 +13,6 @@ public class Especialidade
     public string NomeEspecialidade { get; set; }
     [Required]
     public TipoServico Tipo { get; set; }
+
+    public ICollection<Agendamento> Agendamentos { get; set; }
 }
