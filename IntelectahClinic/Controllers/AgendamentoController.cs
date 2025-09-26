@@ -1,4 +1,5 @@
-﻿using IntelectahClinic.Models;
+﻿using IntelectahClinic.DTOs;
+using IntelectahClinic.Models;
 using IntelectahClinic.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,10 @@ public class AgendamentoController : ControllerBase
         _userManager = userManager;
     }
 
-    [HttpGet("meus-agendamentos/{id}")]
-    public async Task<IActionResult> MeusAgendamentos(string id)
+    [HttpGet("meus-agendamentos/{pacienteId}")]
+    public async Task<IActionResult> MeusAgendamentos(string pacienteId)
     {
-        var agendamentos = await _service.ListarPorPaciente(id);
+        var agendamentos = await _service.ListarPorPaciente(pacienteId);
         return Ok(agendamentos);
     }
 
@@ -30,5 +31,12 @@ public class AgendamentoController : ControllerBase
     {
         await _service.Cancelar(id, pacienteId);
         return Ok("Agendamento cancelado");
+    }
+
+    [HttpPost("reagendar/{pacienteId}")]
+    public async Task<IActionResult> Reagendar([FromBody] AtualizarAgendamentoDTO dto, string pacienteId)
+    {;
+        await _service.Reagendar(dto, pacienteId);
+        return Ok("Agendamento reagendado");
     }
 }

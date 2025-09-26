@@ -1,6 +1,8 @@
 ﻿using IntelectahClinic.DTOs;
 using IntelectahClinic.Models.enums;
 using IntelectahClinic.Repository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace IntelectahClinic.Service;
@@ -50,5 +52,24 @@ public class AgendamentoService
         await _context.SaveChangesAsync();
     }
 
+    public async Task Reagendar(AtualizarAgendamentoDTO dto, string pacienteId)
+    {
+        var agendamento = await _context.Agendamentos
+            .FirstOrDefaultAsync(a => a.Id == dto.Id && a.PacienteId == pacienteId);
+
+        if (agendamento == null)
+        {
+            throw new ApplicationException("Agendamento não encontrado");
+        }
+
+        if (agendamento.Status == StatusAgendamento.ATENDIDO)
+        {
+            throw new ApplicationException("Paciente ja foi Atendido");
+        }
+
+        agendamento.DataHora = dto.NovaDataHora;
+        agendamento.Status = StatusAgendamento.AGENDADO;
+        await _context.SaveChangesAsync();
+    }
 
 }
