@@ -22,6 +22,7 @@ builder.Services.AddScoped<PacienteUserService>();
 builder.Services.AddScoped<PacienteService>();
 builder.Services.AddScoped<AgendamentoService>();
 builder.Services.AddScoped<EspecialidadeService>();
+builder.Services.AddScoped<UnidadeService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
