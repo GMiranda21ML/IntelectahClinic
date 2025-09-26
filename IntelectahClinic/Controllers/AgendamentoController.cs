@@ -1,8 +1,8 @@
 ﻿using IntelectahClinic.DTOs.Agendamento;
-using IntelectahClinic.Migrations;
 using IntelectahClinic.Models;
 using IntelectahClinic.Repository;
 using IntelectahClinic.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -24,6 +24,7 @@ public class AgendamentoController : ControllerBase
         _context = context;
     }
 
+    [Authorize]
     [HttpGet("disponibilidade")]
     public async Task<IActionResult> GetDisponibilidade(int unidadeId, int especialidadeId, DateTime data)
     {
@@ -38,14 +39,17 @@ public class AgendamentoController : ControllerBase
         
     }
 
+    [Authorize]
     [HttpPost("agendar")]
-    public IActionResult Agendar([FromBody] AgendamentoDTO dto)
+    public async Task<IActionResult> Agendar([FromBody] CreateAgendamentoDTO dto)
     {
-        var agendamento = _service.Agendar(dto);
+        Paciente? paciente = await _userManager.GetUserAsync(User);
+        var agendamento = _service.Agendar(dto, paciente.Id);
 
         return CreatedAtAction(nameof(BuscarAgendamentoPorId), new { id = agendamento.Id }, agendamento);
     }
 
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> BuscarAgendamentoPorId(int id)
     {
@@ -59,25 +63,30 @@ public class AgendamentoController : ControllerBase
         return Ok(agendamento);
     }
 
-
-    [HttpGet("meus-agendamentos/{pacienteId}")]
-    public async Task<IActionResult> MeusAgendamentos(string pacienteId)
+    [Authorize]
+    [HttpGet("meus-agendamentos")]
+    public async Task<IActionResult> MeusAgendamentos()
     {
-        var agendamentos = await _service.ListarPorPaciente(pacienteId);
+        Paciente? paciente = await _userManager.GetUserAsync(User);
+        var agendamentos = await _service.ListarPorPaciente(paciente.Id);
         return Ok(agendamentos);
     }
 
-    [HttpPost("cancelar/{id}/{pacienteId}")]
-    public async Task<IActionResult> Cancelar(int id, string pacienteId)
+    [Authorize]
+    [HttpPost("cancelar/{id}")]
+    public async Task<IActionResult> Cancelar(int id)
     {
-        await _service.Cancelar(id, pacienteId);
+        Paciente? paciente = await _userManager.GetUserAsync(User);
+        await _service.Cancelar(id, paciente.Id);
         return Ok("Agendamento cancelado");
     }
 
-    [HttpPost("reagendar/{pacienteId}")]
-    public async Task<IActionResult> Reagendar([FromBody] AtualizarAgendamentoDTO dto, string pacienteId)
-    {;
-        await _service.Reagendar(dto, pacienteId);
+    [Authorize]
+    [HttpPost("reagendar")]
+    public async Task<IActionResult> Reagendar([FromBody] UpdateAgendamentoDTO dto)
+    {
+        Paciente? paciente = await _userManager.GetUserAsync(User);
+        await _service.Reagendar(dto, paciente.Id);
         return Ok("Agendamento reagendado");
     }
 }

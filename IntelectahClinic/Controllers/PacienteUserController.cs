@@ -26,7 +26,7 @@ public class PacienteUserController : Controller
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginPacienteDTO dto)
     {
-        await _userService.Login(dto);
-        return Ok("Usuário autenticado");
+        string token = await _userService.Login(dto);
+        return Ok(token);
     }
 }

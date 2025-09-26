@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IntelectahClinic.DTOs.Agendamento;
 
-public class AgendamentoDTO
+public class CreateAgendamentoDTO
 {
-    [Required(ErrorMessage = "O Id do paciente é obrigatório")]
-    public string PacienteId { get; set; }
     [Required(ErrorMessage = "O Id da especialidade é obrigatório")]
     public int EspecialidadeId { get; set; }
     [Required(ErrorMessage = "O Id da unidade é obrigatório")]

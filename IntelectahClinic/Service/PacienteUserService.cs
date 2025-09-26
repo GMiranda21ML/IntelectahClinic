@@ -14,13 +14,16 @@ public class PacienteUserService
     private UserManager<Paciente> _userManager;
     private IntelectahClinicContext _userContext;
     private SignInManager<Paciente> _signInManager;
+    private TokenService _tokenService;
 
-    public PacienteUserService(IMapper mapper, UserManager<Paciente> userManager, IntelectahClinicContext userContext, SignInManager<Paciente> signInManager)
+    public PacienteUserService(IMapper mapper, UserManager<Paciente> userManager, 
+        IntelectahClinicContext userContext, SignInManager<Paciente> signInManager, TokenService tokenService)
     {
         _mapper = mapper;
         _userManager = userManager;
         _userContext = userContext;
         _signInManager = signInManager;
+        _tokenService = tokenService;
     }
 
     public async Task Cadastro(CadastroPacienteDTO dto)
@@ -40,7 +43,7 @@ public class PacienteUserService
         }
     }
 
-    public async Task Login(LoginPacienteDTO dto)
+    public async Task<string> Login(LoginPacienteDTO dto)
     {
         var resultado = await _signInManager.PasswordSignInAsync(dto.Cpf, dto.Password, false, false);
 
@@ -48,5 +51,14 @@ public class PacienteUserService
         {
             throw new ApplicationException("Usuário não autenticado!");
         }
+
+        Paciente? usuario = _signInManager
+            .UserManager
+            .Users
+            .FirstOrDefault(user => user.NormalizedUserName == dto.Cpf);
+
+       string token =  _tokenService.GenerarToken(usuario);
+
+       return token;
     }
 }

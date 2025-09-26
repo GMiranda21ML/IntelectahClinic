@@ -13,11 +13,19 @@ public class AgendamentoProfile : Profile
 {
     public AgendamentoProfile()
     {
-        CreateMap<AgendamentoDTO, Agendamento>()
+        CreateMap<CreateAgendamentoDTO, Agendamento>()
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => StatusAgendamento.AGENDADO));
-        CreateMap<Agendamento, AgendamentoDetalhadoDTO>();
-        CreateMap<Paciente, DadosPacienteDTO>();
+
+        CreateMap<Agendamento, DadosAgendamentoBasicoDTO>()
+            .ForMember(dest => dest.Especialidade, opt => opt.MapFrom(src => src.Especialidade))
+            .ForMember(dest => dest.Unidade, opt => opt.MapFrom(src => src.Unidade));
+
+        CreateMap<Agendamento, AgendamentoDetalhadoDTO>()
+            .ForMember(dest => dest.Especialidade, opt => opt.MapFrom(src => src.Especialidade))
+            .ForMember(dest => dest.Unidade, opt => opt.MapFrom(src => src.Unidade));
+
         CreateMap<Especialidade, DadosEspecialidadeDTO>();
         CreateMap<Unidade, DadosUnidadeDTO>();
     }
 }
+

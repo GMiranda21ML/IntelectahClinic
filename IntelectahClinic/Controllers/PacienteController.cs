@@ -2,7 +2,10 @@
 using IntelectahClinic.DTOs.Paciente;
 using IntelectahClinic.Models;
 using IntelectahClinic.Service;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace IntelectahClinic.Controllers;
 
@@ -11,16 +14,20 @@ namespace IntelectahClinic.Controllers;
 public class PacienteController : ControllerBase
 {
     private PacienteService _pacienteService;
+    private UserManager<Paciente> _userManager;
 
-    public PacienteController(PacienteService pacienteService)
+    public PacienteController(PacienteService pacienteService, UserManager<Paciente> userManager)
     {
         _pacienteService = pacienteService;
+        _userManager = userManager;
     }
 
-    [HttpGet("{id}")]
-    public IActionResult BuscarPacientePorId(string id)
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> BuscarPacientePorId()
     {
-        DadosPacienteDTO pacienteDto = _pacienteService.BuscarPacientePorId(id);
+        Paciente? paciente = await _userManager.GetUserAsync(User);
+        DadosPacienteDTO pacienteDto = _pacienteService.BuscarPacientePorId(paciente.Id);
 
         
         if (pacienteDto == null)

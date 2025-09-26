@@ -1,4 +1,5 @@
 ﻿using IntelectahClinic.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntelectahClinic.Controllers;
@@ -14,7 +15,9 @@ public class UnidadeController : ControllerBase
         _service = service;
     }
 
+    [Authorize]
     [HttpGet]
+    
     public IActionResult BuscaUnidades()
     {
         return Ok(_service.BuscaUnidades());

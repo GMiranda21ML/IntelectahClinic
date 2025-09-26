@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace IntelectahClinic.DTOs.Agendamento;
-public class AtualizarAgendamentoDTO
+public class UpdateAgendamentoDTO
 {
     [Required(ErrorMessage = "Id do agendamento é Obrigatório")]
     public int Id { get; set; }

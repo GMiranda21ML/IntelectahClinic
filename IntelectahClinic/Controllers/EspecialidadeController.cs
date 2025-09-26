@@ -1,5 +1,6 @@
 ﻿using IntelectahClinic.Models.enums;
 using IntelectahClinic.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,12 +18,14 @@ public class EspecialidadeController : ControllerBase
         _service = service;
     }
 
+    [Authorize]
     [HttpGet("tipos-servico")]
     public IActionResult GetTipoServico()
     {
         return Ok(_service.GetTipoServico());
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetEspecialidades([FromQuery] TipoServico? tipo)
     {

@@ -53,30 +53,23 @@ public class AgendamentoService
 
     }
 
-    public Agendamento Agendar([FromBody] AgendamentoDTO dto)
+    public Agendamento Agendar([FromBody] CreateAgendamentoDTO dto, string pacienteId)
     {
         var agendamento = _mapper.Map<Agendamento>(dto);
-
+        agendamento.PacienteId = pacienteId;
         _context.Agendamentos.Add(agendamento);
         _context.SaveChanges();
         return agendamento;
 
     }
 
-    public async Task<List<DadosAgendamentoDTO>> ListarPorPaciente(string pacienteId)
+    public async Task<List<DadosAgendamentoBasicoDTO>> ListarPorPaciente(string pacienteId)
     {
         return await _context.Agendamentos
             .Where(a => a.PacienteId == pacienteId)
-            .OrderBy(a => a.DataHora)
-            .Select(a => new DadosAgendamentoDTO
-            {
-                Id = a.Id,
-                Especialidade = a.Especialidade.NomeEspecialidade,
-                Unidade = a.Unidade.NomeUnidade,
-                DataHora = a.DataHora,
-                Status = a.Status,
-                Observacoes = a.Observacoes
-            })
+            .Include(a => a.Especialidade)
+            .Include(a => a.Unidade)
+            .ProjectTo<DadosAgendamentoBasicoDTO>(_mapper.ConfigurationProvider)
             .ToListAsync();
     }
 
@@ -84,9 +77,12 @@ public class AgendamentoService
     {
         return await _context.Agendamentos
             .Where(a => a.Id == id)
+            .Include(a => a.Especialidade)
+            .Include(a => a.Unidade)
             .ProjectTo<AgendamentoDetalhadoDTO>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
     }
+
 
 
 
@@ -109,7 +105,7 @@ public class AgendamentoService
         await _context.SaveChangesAsync();
     }
 
-    public async Task Reagendar(AtualizarAgendamentoDTO dto, string pacienteId)
+    public async Task Reagendar(UpdateAgendamentoDTO dto, string pacienteId)
     {
         var agendamento = await _context.Agendamentos
             .FirstOrDefaultAsync(a => a.Id == dto.Id && a.PacienteId == pacienteId);
