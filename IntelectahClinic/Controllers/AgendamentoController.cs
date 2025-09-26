@@ -1,4 +1,4 @@
-﻿using IntelectahClinic.DTOs;
+﻿using IntelectahClinic.DTOs.Agendamento;
 using IntelectahClinic.Models;
 using IntelectahClinic.Service;
 using Microsoft.AspNetCore.Identity;

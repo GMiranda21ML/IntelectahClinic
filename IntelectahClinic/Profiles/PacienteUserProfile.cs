@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IntelectahClinic.DTOs;
+using IntelectahClinic.DTOs.User;
 using IntelectahClinic.Models;
 
 namespace IntelectahClinic.Profiles;

@@ -1,4 +1,4 @@
-﻿namespace IntelectahClinic.DTOs;
+﻿namespace IntelectahClinic.DTOs.Paciente;
 
 public class DadosPacienteDTO
 {

@@ -1,6 +1,6 @@
 ﻿using IntelectahClinic.Models.enums;
 
-namespace IntelectahClinic.DTOs;
+namespace IntelectahClinic.DTOs.Agendamento;
 
 public class AgendamentoDTO
 {

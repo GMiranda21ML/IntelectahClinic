@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IntelectahClinic.DTOs;
+namespace IntelectahClinic.DTOs.User;
 
 public class LoginPacienteDTO
 {

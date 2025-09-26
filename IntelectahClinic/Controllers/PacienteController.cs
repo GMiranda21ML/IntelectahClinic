@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using IntelectahClinic.DTOs;
+using IntelectahClinic.DTOs.Paciente;
 using IntelectahClinic.Models;
 using IntelectahClinic.Service;
 using Microsoft.AspNetCore.Mvc;

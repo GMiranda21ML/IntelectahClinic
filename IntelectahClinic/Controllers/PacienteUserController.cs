@@ -1,4 +1,4 @@
-﻿using IntelectahClinic.DTOs;
+﻿using IntelectahClinic.DTOs.User;
 using IntelectahClinic.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
