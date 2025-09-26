@@ -4,6 +4,8 @@ using IntelectahClinic.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
+using System.Threading.Tasks;
 
 namespace IntelectahClinic.Service;
 
@@ -14,6 +16,33 @@ public class AgendamentoService
     public AgendamentoService(IntelectahClinicContext context)
     {
         _context = context;
+    }
+
+    public async Task<IEnumerable<DateTime>> GetDisponibilidade(int unidadeId, int especialidadeId, DateTime data)
+    {
+        if (data < DateTime.Now)
+        {
+            return new List<DateTime>();
+        }
+
+        if (data.DayOfWeek == DayOfWeek.Saturday || data.DayOfWeek == DayOfWeek.Sunday)
+        {
+            return new List<DateTime>();
+        }
+
+        var horarios = Enumerable.Range(8, 10)
+            .Select(h => new DateTime(data.Year, data.Month, data.Day, h, 0, 0))
+            .ToList();
+
+        var agendados = await _context.Agendamentos
+            .Where(a => a.UnidadeId == unidadeId
+                     && a.EspecialidadeId == especialidadeId
+                     && a.DataHora.Date == data.Date)
+            .Select(a => a.DataHora)
+            .ToListAsync();
+
+        return horarios.Where(h => !agendados.Contains(h)).ToList();
+
     }
 
     public async Task<List<AgendamentoDTO>> ListarPorPaciente(string pacienteId)
