@@ -12,5 +12,7 @@ public class Unidade
     public string NomeUnidade { get; set; }
     [Required]
     public string Endereco { get; set; }
-    public ICollection<Agendamento> Agendamentos { get; set; }
+    public virtual ICollection<Agendamento> Agendamentos { get; set; }
+
+    public Unidade() { }
 }

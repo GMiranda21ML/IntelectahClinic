@@ -1,10 +1,11 @@
 ﻿using IntelectahClinic.DTOs.Agendamento;
+using IntelectahClinic.Migrations;
 using IntelectahClinic.Models;
 using IntelectahClinic.Repository;
 using IntelectahClinic.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace IntelectahClinic.Controllers;
 
@@ -36,6 +37,28 @@ public class AgendamentoController : ControllerBase
         return Ok(horarios);
         
     }
+
+    [HttpPost("agendar")]
+    public IActionResult Agendar([FromBody] AgendamentoDTO dto)
+    {
+        var agendamento = _service.Agendar(dto);
+
+        return CreatedAtAction(nameof(BuscarAgendamentoPorId), new { id = agendamento.Id }, agendamento);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> BuscarAgendamentoPorId(int id)
+    {
+        var agendamento = await _service.BuscarAgendamentoPorId(id);
+
+        if (agendamento == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(agendamento);
+    }
+
 
     [HttpGet("meus-agendamentos/{pacienteId}")]
     public async Task<IActionResult> MeusAgendamentos(string pacienteId)

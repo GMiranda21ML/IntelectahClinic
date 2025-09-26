@@ -1,4 +1,10 @@
-﻿using IntelectahClinic.DTOs.Agendamento;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using IntelectahClinic.DTOs.Agendamento;
+using IntelectahClinic.DTOs.Especialidade;
+using IntelectahClinic.DTOs.Paciente;
+using IntelectahClinic.DTOs.Unidade;
+using IntelectahClinic.Models;
 using IntelectahClinic.Models.enums;
 using IntelectahClinic.Repository;
 using Microsoft.AspNetCore.Identity;
@@ -12,10 +18,12 @@ namespace IntelectahClinic.Service;
 public class AgendamentoService
 {
     private IntelectahClinicContext _context;
+    private IMapper _mapper;
 
-    public AgendamentoService(IntelectahClinicContext context)
+    public AgendamentoService(IntelectahClinicContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     public async Task<IEnumerable<DateTime>> GetDisponibilidade(int unidadeId, int especialidadeId, DateTime data)
@@ -45,12 +53,22 @@ public class AgendamentoService
 
     }
 
-    public async Task<List<AgendamentoDTO>> ListarPorPaciente(string pacienteId)
+    public Agendamento Agendar([FromBody] AgendamentoDTO dto)
+    {
+        var agendamento = _mapper.Map<Agendamento>(dto);
+
+        _context.Agendamentos.Add(agendamento);
+        _context.SaveChanges();
+        return agendamento;
+
+    }
+
+    public async Task<List<DadosAgendamentoDTO>> ListarPorPaciente(string pacienteId)
     {
         return await _context.Agendamentos
             .Where(a => a.PacienteId == pacienteId)
             .OrderBy(a => a.DataHora)
-            .Select(a => new AgendamentoDTO
+            .Select(a => new DadosAgendamentoDTO
             {
                 Id = a.Id,
                 Especialidade = a.Especialidade.NomeEspecialidade,
@@ -61,6 +79,16 @@ public class AgendamentoService
             })
             .ToListAsync();
     }
+
+    public async Task<AgendamentoDetalhadoDTO> BuscarAgendamentoPorId(int id)
+    {
+        return await _context.Agendamentos
+            .Where(a => a.Id == id)
+            .ProjectTo<AgendamentoDetalhadoDTO>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync();
+    }
+
+
 
     public async Task Cancelar(int agendamentoId, string pacienteId)
     {

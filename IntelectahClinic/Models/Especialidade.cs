@@ -14,5 +14,7 @@ public class Especialidade
     [Required]
     public TipoServico Tipo { get; set; }
 
-    public ICollection<Agendamento> Agendamentos { get; set; }
+    public virtual ICollection<Agendamento> Agendamentos { get; set; }
+
+    public Especialidade() { }
 }
