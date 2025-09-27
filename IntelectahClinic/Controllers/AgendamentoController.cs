@@ -73,6 +73,15 @@ public class AgendamentoController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet("proximos-agendamentos")]
+    public async Task<IActionResult> ProximosAgendamentos()
+    {
+        Paciente? paciente = await _userManager.GetUserAsync(User);
+        var agendamentos = await _service.ListarPorPacienteAgendado(paciente.Id);
+        return Ok(agendamentos);
+    }
+
+    [Authorize]
     [HttpPost("cancelar/{id}")]
     public async Task<IActionResult> Cancelar(int id)
     {

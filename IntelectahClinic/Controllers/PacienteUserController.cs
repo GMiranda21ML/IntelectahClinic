@@ -1,5 +1,6 @@
 ﻿using IntelectahClinic.DTOs.User;
 using IntelectahClinic.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -16,6 +17,7 @@ public class PacienteUserController : Controller
         _userService = userService;
     }
 
+    [AllowAnonymous]
     [HttpPost("cadastro")] 
     public async Task<IActionResult> Cadastro([FromBody] CadastroPacienteDTO dto)
     {
@@ -23,10 +25,11 @@ public class PacienteUserController : Controller
         return Ok("Usuário Cadastrado!");
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginPacienteDTO dto)
     {
-        string token = await _userService.Login(dto);
-        return Ok(token);
+        await _userService.Login(dto);
+        return Ok("Usuário autenticado");
     }
 }

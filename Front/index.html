@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelectah Clinic - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="./styles/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light">
+        <div class="row w-100">
+            <div class="col-md-6 col-lg-4 mx-auto">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body p-5">
+                        <!-- Logo/Header -->
+                        <div class="text-center mb-4">
+                            <div class="logo-container mb-3">
+                                <i class="fas fa-heartbeat text-primary" style="font-size: 3rem;"></i>
+                            </div>
+                            <h2 class="fw-bold text-primary">Intelectah Clinic</h2>
+                            <p class="text-muted">Seu cuidado em primeiro lugar</p>
+                        </div>
+
+                        <!-- Login Form -->
+                        <div id="loginForm">
+                            <h4 class="text-center mb-4">Entrar na sua conta</h4>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="cpfLogin" class="form-label">
+                                        <i class="fas fa-id-card me-2"></i>CPF
+                                    </label>
+                                    <input type="text" class="form-control form-control-lg" id="cpfLogin" 
+                                           placeholder="12345678900" maxlength="11" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="senhaLogin" class="form-label">
+                                        <i class="fas fa-lock me-2"></i>Senha
+                                    </label>
+                                    <input type="password" class="form-control form-control-lg" id="senhaLogin" placeholder="Digite sua senha">
+                                </div>
+                                <button type="button" class="btn btn-primary btn-lg w-100 mb-3" onclick="fazerLogin()">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Entrar
+                                </button>
+                            </form>
+                            <div class="text-center">
+                                <p class="mb-0">Não tem conta? 
+                                    <a href="#" class="text-primary fw-bold" onclick="mostrarCadastro()">Cadastre-se aqui</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Cadastro Form -->
+                        <div id="cadastroForm" style="display: none;">
+                            <h4 class="text-center mb-4">Criar nova conta</h4>
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="nomeCadastro" class="form-label">
+                                            <i class="fas fa-user me-2"></i>Nome Completo
+                                        </label>
+                                        <input type="text" class="form-control form-control-lg" id="nomeCadastro" placeholder="Digite seu nome completo" required>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cpfCadastro" class="form-label">
+                                            <i class="fas fa-id-card me-2"></i>CPF
+                                        </label>
+                                        <input type="text" class="form-control form-control-lg" id="cpfCadastro" 
+                                               placeholder="12345678900" maxlength="11" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="dataNascimento" class="form-label">
+                                            <i class="fas fa-calendar me-2"></i>Data de Nascimento
+                                        </label>
+                                        <input type="date" class="form-control form-control-lg" id="dataNascimento" required>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="telefone" class="form-label">
+                                            <i class="fas fa-phone me-2"></i>Telefone
+                                        </label>
+                                        <input type="tel" class="form-control form-control-lg" id="telefone" 
+                                               placeholder="(11) 99999-9999" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="emailCadastro" class="form-label">
+                                            <i class="fas fa-envelope me-2"></i>E-mail
+                                        </label>
+                                        <input type="email" class="form-control form-control-lg" id="emailCadastro" placeholder="seu@email.com" required>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-3">
+                                        <label for="convenio" class="form-label">
+                                            <i class="fas fa-shield-alt me-2"></i>Convênio
+                                        </label>
+                                        <select class="form-select form-select-lg" id="convenio" required>
+                                            <option value="">Selecione seu convênio</option>
+                                            <option value="unimed">Unimed</option>
+                                            <option value="bradesco">Bradesco Saúde</option>
+                                            <option value="amil">Amil</option>
+                                            <option value="sulamerica">SulAmérica</option>
+                                            <option value="notredame">Notre Dame Intermédica</option>
+                                            <option value="hapvida">Hapvida</option>
+                                            <option value="particular">Particular</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="senhaCadastro" class="form-label">
+                                            <i class="fas fa-lock me-2"></i>Senha
+                                        </label>
+                                        <input type="password" class="form-control form-control-lg" id="senhaCadastro" placeholder="Digite uma senha" required>
+                                    </div>
+                                    
+                                    <div class="col-md-6 mb-4">
+                                        <label for="confirmarSenha" class="form-label">
+                                            <i class="fas fa-lock me-2"></i>Confirmar Senha
+                                        </label>
+                                        <input type="password" class="form-control form-control-lg" id="confirmarSenha" placeholder="Confirme sua senha" required>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" class="btn btn-success btn-lg w-100 mb-3" onclick="fazerCadastro()">
+                                    <i class="fas fa-user-plus me-2"></i>Cadastrar
+                                </button>
+                            </form>
+                            <div class="text-center">
+                                <p class="mb-0">Já tem conta? 
+                                    <a href="#" class="text-primary fw-bold" onclick="mostrarLogin()">Faça login aqui</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div id="cadastroForm" style="display: none;">
+                            </div>
+
+                        <div id="feedbackMessage" class="alert mt-3" style="display: none;" role="alert">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const API_BASE_URL = 'http://localhost:5294/'; 
+
+        const USER_CONTROLLER = 'user/'; 
+
+
+        function mostrarLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('cadastroForm').style.display = 'none';
+            document.getElementById('feedbackMessage').style.display = 'none'; 
+        }
+
+        function mostrarCadastro() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('cadastroForm').style.display = 'block';
+            document.getElementById('feedbackMessage').style.display = 'none'; 
+        }
+
+        function mostrarFeedback(message, isSuccess = true) {
+            const feedbackDiv = document.getElementById('feedbackMessage');
+            feedbackDiv.textContent = message;
+            feedbackDiv.className = `alert ${isSuccess ? 'alert-success' : 'alert-danger'} mt-3`;
+            feedbackDiv.style.display = 'block';
+        }
+
+
+        async function fazerLogin() {
+            const cpf = document.getElementById('cpfLogin').value.replace(/\D/g, ''); 
+            const password = document.getElementById('senhaLogin').value;
+
+            if (!cpf || !password) {
+                mostrarFeedback('Por favor, preencha o CPF e a Senha.', false);
+                return;
+            }
+
+            const loginData = {
+                cpf: cpf,
+                password: password
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}${USER_CONTROLLER}login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData),
+                    
+                    
+                    
+                    
+                    credentials: 'include' 
+                });
+
+                if (response.ok) {
+                    
+                    mostrarFeedback('Login realizado com sucesso! Redirecionando...', true);
+                    
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html'; 
+                    }, 1000); 
+
+                } else {
+                    
+                    const errorText = await response.text(); 
+                    
+                    mostrarFeedback(`Falha no Login. Erro: ${errorText || 'Credenciais inválidas.'}`, false);
+                }
+            } catch (error) {
+                console.error('Erro ao conectar com a API:', error);
+                mostrarFeedback('Erro de conexão com o servidor. Tente novamente.', false);
+            }
+        }
+
+
+        async function fazerCadastro() {
+            const nomeCompleto = document.getElementById('nomeCadastro').value;
+            const cpf = document.getElementById('cpfCadastro').value.replace(/\D/g, '');
+            const dataNascimento = document.getElementById('dataNascimento').value;
+            const telefone = document.getElementById('telefone').value;
+            const email = document.getElementById('emailCadastro').value;
+            const convenio = document.getElementById('convenio').value;
+            const password = document.getElementById('senhaCadastro').value;
+            const passwordConfirmada = document.getElementById('confirmarSenha').value;
+
+            
+            if (!nomeCompleto || !cpf || !dataNascimento || !telefone || !email || !convenio || !password || !passwordConfirmada) {
+                mostrarFeedback('Por favor, preencha todos os campos do formulário de cadastro.', false);
+                return;
+            }
+
+            if (password !== passwordConfirmada) {
+                mostrarFeedback('As senhas digitadas não são iguais. Por favor, verifique.', false);
+                return;
+            }
+
+            
+            const cadastroData = {
+                nomeCompleto: nomeCompleto,
+                cpf: cpf,
+                dataNascimento: dataNascimento,
+                telefone: telefone,
+                email: email,
+                convenio: convenio,
+                password: password,
+                passwordConfirmada: passwordConfirmada
+            };
+            
+            
+            const dataFormatada = new Date(dataNascimento).toISOString();
+            cadastroData.dataNascimento = dataFormatada;
+
+
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}${USER_CONTROLLER}cadastro`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(cadastroData),
+                    
+                    credentials: 'include' 
+                });
+
+                if (response.ok) {
+                    
+                    mostrarFeedback('✅ Cadastro realizado com sucesso! Faça seu login.', true);
+                    
+                    setTimeout(() => {
+                        mostrarLogin();
+                    }, 1500);
+                } else {
+                    
+                    const errorText = await response.text();
+                    
+                    mostrarFeedback(`❌ Falha no Cadastro. Erro: ${errorText || 'Ocorreu um erro desconhecido.'}`, false);
+                }
+            } catch (error) {
+                console.error('Erro ao conectar com a API:', error);
+                mostrarFeedback('Erro de conexão com o servidor. Verifique se o backend está rodando.', false);
+            }
+        }
+
+
+
+
+        async function buscarDadosAutenticados(endpoint) {
+            try {
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+                    method: 'GET', 
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include' 
+                });
+
+                if (response.status === 401) {
+                    console.error("Não autorizado (401). Cookie não enviado ou expirado.");
+                    
+                    window.location.href = 'index.html';
+                    return null;
+                }
+
+                if (!response.ok) {
+                    console.error(`Erro ao buscar dados: ${response.statusText}`);
+                    return null;
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('Erro de rede/conexão:', error);
+                return null;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            const btnLogin = document.getElementById('btnLogin');
+            if (btnLogin) {
+                btnLogin.addEventListener('click', fazerLogin);
+            }
+
+            const btnCadastro = document.getElementById('btnCadastro');
+            if (btnCadastro) {
+                btnCadastro.addEventListener('click', fazerCadastro);
+            }
+            
+            
+            if (document.getElementById('loginForm') || document.getElementById('cadastroForm')) {
+                
+                
+            }
+
+            
+        });
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -73,6 +73,16 @@ public class AgendamentoService
             .ToListAsync();
     }
 
+    public async Task<List<DadosAgendamentoBasicoDTO>> ListarPorPacienteAgendado(string pacienteId)
+    {
+        return await _context.Agendamentos
+            .Where(a => a.PacienteId == pacienteId && a.Status == StatusAgendamento.AGENDADO)
+            .Include(a => a.Especialidade)
+            .Include(a => a.Unidade)
+            .ProjectTo<DadosAgendamentoBasicoDTO>(_mapper.ConfigurationProvider)
+            .ToListAsync();
+    }
+
     public async Task<AgendamentoDetalhadoDTO> BuscarAgendamentoPorId(int id)
     {
         return await _context.Agendamentos
