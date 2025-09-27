@@ -1,17 +1,15 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using IntelectahClinic.DTOs.Agendamento;
-using IntelectahClinic.DTOs.Especialidade;
-using IntelectahClinic.DTOs.Paciente;
-using IntelectahClinic.DTOs.Unidade;
 using IntelectahClinic.Models;
 using IntelectahClinic.Models.enums;
 using IntelectahClinic.Repository;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
-using System.Threading.Tasks;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
+
 
 namespace IntelectahClinic.Service;
 
@@ -94,8 +92,6 @@ public class AgendamentoService
     }
 
 
-
-
     public async Task Cancelar(int agendamentoId, string pacienteId)
     {
         var agendamento = await _context.Agendamentos
@@ -133,6 +129,80 @@ public class AgendamentoService
         agendamento.DataHora = dto.NovaDataHora;
         agendamento.Status = StatusAgendamento.AGENDADO;
         await _context.SaveChangesAsync();
+    }
+
+    public async Task<byte[]> GerarPdfAgendamentoPorId(int id)
+    {
+        QuestPDF.Settings.License = LicenseType.Community;
+
+        var agendamento = await BuscarAgendamentoPorId(id);
+
+        if (agendamento == null)
+        {
+            throw new ApplicationException("Agendamento não encontrado.");
+        }
+
+        var document = Document.Create(container =>
+        {
+            container.Page(page =>
+            {
+                page.Size(PageSizes.A4);
+                page.Margin(20);
+                page.PageColor(Colors.White);
+                page.DefaultTextStyle(x => x.FontSize(12).FontColor(Colors.Black));
+
+                page.Header()
+                    .PaddingBottom(10)
+                    .BorderBottom(1)
+                    .BorderColor(Colors.Grey.Lighten2)
+                    .Row(row =>
+                    {
+                        row.RelativeItem()
+                            .Text("Intelectah Clinic")
+                            .Bold()
+                            .FontSize(18)
+                            .FontColor(Colors.Blue.Darken2);
+
+                        row.RelativeItem()
+                            .AlignRight()
+                            .Text("Agendamento")
+                            .FontSize(10)
+                            .FontColor(Colors.Grey.Darken1);
+                    });
+
+                page.Content()
+                    .PaddingVertical(20)
+                    .Column(column =>
+                    {
+                        column.Item().Text($"Paciente: {agendamento.Paciente.NomeCompleto}").Bold();
+                        column.Item().Text($"Especialidade: {agendamento.Especialidade.NomeEspecialidade}");
+                        if (agendamento.Status == StatusAgendamento.AGENDADO)
+                        {
+                            column.Item().Text($"Status: {agendamento.Status}").FontColor(Colors.Green.Darken1);
+                        }
+                        else if (agendamento.Status == StatusAgendamento.CANCELADO)
+                        {
+                            column.Item().Text($"Status: {agendamento.Status}").FontColor(Colors.Red.Darken1);
+                        }
+                        else
+                        {
+                            column.Item().Text($"Status: {agendamento.Status}");
+                        }
+                        column.Item().Text($"Data: {agendamento.DataHora:dd/MM/yyyy}");
+                        column.Item().Text($"Horário: {agendamento.DataHora:hh\\:mm}");
+                        column.Item().Text($"Unidade: {agendamento.Unidade.NomeUnidade}");
+                        column.Item().Text($"Endereço: {agendamento.Unidade.Endereco}");
+                    });
+
+                page.Footer()
+                    .AlignCenter()
+                    .Text($"Gerado em {DateTime.Now:dd/MM/yyyy HH:mm}")
+                    .FontSize(10)
+                    .FontColor(Colors.Grey.Darken1);
+            });
+        });
+
+        return document.GeneratePdf();;
     }
 
 }

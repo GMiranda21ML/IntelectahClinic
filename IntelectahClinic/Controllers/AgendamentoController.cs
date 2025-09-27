@@ -5,7 +5,6 @@ using IntelectahClinic.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace IntelectahClinic.Controllers;
 
@@ -98,4 +97,13 @@ public class AgendamentoController : ControllerBase
         await _service.Reagendar(dto, paciente.Id);
         return Ok("Agendamento reagendado");
     }
+
+    [HttpGet("pdf-agendamento/{id}")]
+    public async Task<IActionResult> GerarPdfAgendamentoPorId(int id)
+    {
+        var pdfBytes = await _service.GerarPdfAgendamentoPorId(id);
+        return File(pdfBytes, "application/pdf", $"agendamento_{id}.pdf");
+    }
+
+
 }

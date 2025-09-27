@@ -143,7 +143,7 @@ function criarBotoesAcao(agendamento, isHistorico) {
     if (isHistorico) {
         if (agendamento.status === 3) {
         botoes += `
-            <button class="btn btn-outline-secondary btn-sm" onclick="alert('Baixar comprovante ainda não implementado!')">
+            <button class="btn btn-outline-secondary btn-sm" onclick="baixarPdfAgendamento(${agendamento.id})">
                 <i class="fas fa-file-download me-1"></i>Baixar
             </button>
         `;
@@ -196,8 +196,8 @@ function filtrarAgendamentos() {
 
     renderizarAgendamentos(agendamentosFiltrados);
 }
-    
-    
+ 
+let agendamentoAtualId = null;
 
 async function verDetalhes(id) {
     const agendamento = todosAgendamentos.find(a => a.id === id);
@@ -205,6 +205,8 @@ async function verDetalhes(id) {
         alert('Agendamento não encontrado!');
         return;
     }
+
+    agendamentoAtualId = agendamento.id;
 
     const tipoText = agendamento.especialidade.tipo === 0 ? 'Consulta' : 'Exame';
     const especialidadeText = agendamento.especialidade.nomeEspecialidade;
@@ -218,7 +220,6 @@ async function verDetalhes(id) {
     document.getElementById('modalLocal').textContent = agendamento.unidade.nomeUnidade;
     document.getElementById('modalEndereco').textContent = agendamento.unidade.endereco;
 
-    
     const detalhesModal = new bootstrap.Modal(document.getElementById('detalhesModal'));
     detalhesModal.show();
 }
@@ -358,6 +359,12 @@ function mostrarFeedback(message, isSuccess = true) {
     feedbackDiv.textContent = message;
     feedbackDiv.className = `alert ${isSuccess ? 'alert-success' : 'alert-danger'} mt-3`;
     feedbackDiv.style.display = 'block';
+}
+
+function baixarPdfAgendamento(id) {
+    const url = `${API_BASE_URL}${AGENDAMENTO_CONTROLLER}pdf-agendamento/${id}`;
+
+    window.open(url, '_blank');
 }
 
 function logout() {
