@@ -443,8 +443,15 @@
 
         async function selecionarTipo(tipoNome) {
             try {
-                
                 const response = await fetch(`${API_BASE_URL}Especialidade/tipos-servico`, { credentials: 'include' });
+
+                if (!response.ok) {
+                        setTimeout(() => {
+                            window.location.href = 'index.html'; s
+                        }, 2000);
+                        return;
+                } 
+
                 const tipos = await response.json();
                 tipoSelecionado = tipos.find(t => t.nome.toLowerCase() === tipoNome.toLowerCase());
 

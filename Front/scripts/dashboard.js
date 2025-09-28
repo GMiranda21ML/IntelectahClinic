@@ -14,8 +14,11 @@ async function carregarProximosAgendamentos() {
 
         if (!response.ok) {
             container.innerHTML = `<div class="alert alert-danger">Erro ao carregar agendamentos: ${response.statusText}</div>`;
+            setTimeout(() => {
+                window.location.href = 'index.html'; s
+            }, 2000);
             return;
-        }
+        } 
 
         const agendamentos = await response.json();
 
