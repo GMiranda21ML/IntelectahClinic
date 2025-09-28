@@ -21,15 +21,39 @@ public class PacienteUserController : Controller
     [HttpPost("cadastro")] 
     public async Task<IActionResult> Cadastro([FromBody] CadastroPacienteDTO dto)
     {
-        await _userService.Cadastro(dto);
-        return Ok("Usuário Cadastrado!");
+        try
+        {
+            await _userService.Cadastro(dto);
+            return Ok("Usuário Cadastrado!");
+        }
+        catch (ApplicationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { error = "Erro interno no servidor." });
+        }
     }
 
     [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginPacienteDTO dto)
     {
-        await _userService.Login(dto);
-        return Ok("Usuário autenticado");
+        try
+        {
+            await _userService.Login(dto);
+            return Ok("Usuário autenticado");
+        }
+        catch (ApplicationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, new { error = "Erro interno no servidor." });
+        }
+
     }
+
 }

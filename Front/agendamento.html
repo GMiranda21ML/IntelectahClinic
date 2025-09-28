@@ -416,19 +416,29 @@
         let dataSelecionada = null;
         let horarioSelecionado = null;
 
-        function atualizarStep(stepIndex) {
-            
-            const steps = document.querySelectorAll('.step-indicator');
+        let stepAtual = 0;
+        const stepsIds = ["tipoStep", "especialidadeStep", "localStep", "dataStep", "horarioStep", "confirmacaoStep"];
 
-            steps.forEach((s, i) => {
-                s.classList.remove('active');
-                if (i === stepIndex) {
-                    s.classList.add('active');
+        function mostrarStep(index) {
+            stepsIds.forEach(id => document.getElementById(id).style.display = "none");
+
+            document.getElementById(stepsIds[index]).style.display = "block";
+
+            atualizarStep(index);
+
+            stepAtual = index;
+        }
+
+        function atualizarStep(index) {
+            const indicators = document.querySelectorAll(".step-indicator");
+            indicators.forEach((el, i) => {
+                if (i === index) {
+                    el.classList.add("active");
+                } else {
+                    el.classList.remove("active");
                 }
             });
         }
-
-
 
         async function selecionarTipo(tipoNome) {
             try {
@@ -450,7 +460,7 @@
             } catch (error) {
                 console.error("Erro ao selecionar tipo:", error);
             }
-            atualizarStep(1);
+            mostrarStep(1);
         }
 
 
@@ -487,7 +497,7 @@
             document.getElementById("localStep").style.display = "block";
 
             carregarUnidades();
-            atualizarStep(2);
+            mostrarStep(2);
         }
 
 
@@ -526,10 +536,8 @@
             document.getElementById("dataStep").style.display = "block";
 
             carregarCalendario();
-            atualizarStep(3);
+            mostrarStep(3);
         }
-
-
 
 
         function carregarCalendario() {
@@ -566,7 +574,7 @@
             document.getElementById("horarioStep").style.display = "block";
 
             carregarHorarios();
-            atualizarStep(4);
+            mostrarStep(4);
         }
 
         async function carregarHorarios() {
@@ -597,7 +605,7 @@
 
             document.getElementById("horarioStep").style.display = "none";
             document.getElementById("confirmacaoStep").style.display = "block";
-            atualizarStep(5);
+            mostrarStep(5);
         }
 
 
@@ -629,6 +637,16 @@
                 console.error("Erro ao confirmar agendamento:", error);
             }
         }
+
+        document.querySelectorAll('.step-indicator').forEach((el, i) => {
+            el.style.cursor = "pointer";
+            el.addEventListener("click", () => {
+                if (i <= stepAtual) {
+                    mostrarStep(i);
+                }
+            });
+        });
+
 
         function logout() {
             window.location.href = 'index.html';
