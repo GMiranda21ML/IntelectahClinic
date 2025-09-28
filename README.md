@@ -4,7 +4,7 @@ Sistema de gerenciamento de agendamento médico/exame desenvolvido em ASP.NET Co
 
 ## 📋 Sobre o Projeto
 
-O IntelectahClinic é um sistema completo para gerenciamento de clínicas médicas que permite:
+O IntelectahClinic é um sistema completo para gerenciamento de de agendamento médico/exame que permite:
 
 - **Cadastro e autenticação de pacientes**
 - **Agendamento de consultas e exames**
@@ -115,7 +115,3 @@ dotnet run
 ## 👨‍💻 Autor
 
 **Gabriel Miranda Mucarbel de Lima**
-
----
-
-⭐ Se este projeto foi útil para você, considere dar uma estrela no repositório!
