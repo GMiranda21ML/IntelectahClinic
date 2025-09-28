@@ -47,9 +47,15 @@ public class AgendamentoService
             .Select(a => a.DataHora)
             .ToListAsync();
 
-        return horarios.Where(h => !agendados.Contains(h)).ToList();
-
+        return horarios
+            .Where(h => !agendados.Any(a =>
+                a.Date == h.Date &&
+                a.Hour == h.Hour &&
+                a.Minute == h.Minute
+            ))
+            .ToList();
     }
+
 
     public Agendamento Agendar([FromBody] CreateAgendamentoDTO dto, string pacienteId)
     {
