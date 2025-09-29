@@ -26,7 +26,7 @@ public class AgendamentoService
 
     public async Task<IEnumerable<DateTime>> GetDisponibilidade(int unidadeId, int especialidadeId, DateTime data)
     {
-        if (data < DateTime.Now)
+        if (data.Date < DateTime.Now.Date)
         {
             return new List<DateTime>();
         }
@@ -39,6 +39,13 @@ public class AgendamentoService
         var horarios = Enumerable.Range(8, 10)
             .Select(h => new DateTime(data.Year, data.Month, data.Day, h, 0, 0))
             .ToList();
+
+        if (data.Date == DateTime.Now.Date)
+        {
+            horarios = horarios
+                .Where(h => h > DateTime.Now)
+                .ToList();
+        }
 
         var agendados = await _context.Agendamentos
             .Where(a => a.UnidadeId == unidadeId
