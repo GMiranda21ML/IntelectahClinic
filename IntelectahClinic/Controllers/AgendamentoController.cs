@@ -33,7 +33,7 @@ public class AgendamentoController : ControllerBase
         {
             return NoContent();
         }
-
+        
         return Ok(horarios);
         
     }
